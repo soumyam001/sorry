@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm So Sorry... 💖</title>
+    <!-- 1. Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Google Fonts for the "cute" look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 3. Custom CSS for animations and font styles -->
+    <style>
+        /* Apply the cute fonts */
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden; /* Hide scrollbars from animations */
+        }
+        
+        h1, h2, button, .message-text {
+            font-family: 'Mochiy Pop One', sans-serif;
+        }
+
+        /* --- Background Floating Hearts Animation --- */
+        
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none; /* Let clicks go through */
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ffb6c1; /* Light pink */
+            animation: float 10s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- Main Card Pulsing Heart --- */
+        
+        .pulse-heart {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* --- Button Click Heart Explosion --- */
+
+        .pop-heart {
+            position: fixed; /* Use fixed to burst from click */
+            font-size: 24px;
+            animation: pop 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                /* --tx and --ty are set by JavaScript */
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* --- Jump Animation (from original) --- */
+        
+        #jump-animation-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            background-color: #f3f4f6; /* Light gray "building" */
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .jumper {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            animation: fall 1.5s ease-in forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                top: 5px;
+                opacity: 1;
+                transform: translateX(-50%) rotate(0deg);
+            }
+            100% {
+                top: 110px; /* 150px height - 40px emoji */
+                opacity: 0;
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
+
+        /* Helper for button transitions */
+        .button-container {
+            min-height: 80px; /* Give space for buttons to swap */
+        }
+
+        /* --- Big Kiss Animation --- */
+        #kiss-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allow clicks through when hidden */
+        }
+        #kiss-overlay.show {
+            opacity: 1;
+            pointer-events: all; /* Block clicks when visible */
+        }
+
+        .animate-kiss {
+            /* This class is added by JS to trigger the animation */
+            animation: big-kiss 1.3s ease-in-out forwards;
+        }
+
+        @keyframes big-kiss {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* --- NEW: Shayari Overlay --- */
+        #shayari-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #shayari-overlay.show {
+            opacity: 1;
+        }
+        #shayari-overlay.show #shayari-paper {
+            transform: scale(1);
+        }
+
+    </style>
+</head>
+<body class="bg-pink-100">
+
+    <!-- Background heart container (Initially Hidden) -->
+    <div id="heart-container" class="hidden"></div>
+
+    <!-- Main content: Centered container -->
+    <div id="content-container" class="min-h-screen flex items-center justify-center p-4">
+        
+        <!-- Wrapper for the letters -->
+        <div id="letter-wrapper" class="flex flex-col lg:flex-row gap-8">
+
+            <!-- STATE 1: Apology Envelope -->
+            <div id="envelope-container" class="text-center cursor-pointer group">
+                <div class="relative bg-pink-200 w-80 h-52 max-w-[90vw] rounded-lg shadow-2xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-pink-300/50">
+                    <!-- Envelope Flap (Triangle) -->
+                    <div class="absolute top-0 left-0 w-full h-full">
+                        <div class="absolute left-1/2 -translate-x-1/2 top-0 w-0 h-0 border-l-[160px] border-l-transparent border-r-[160px] border-r-transparent border-t-[100px] border-t-pink-400 group-hover:border-t-pink-300 transition-all"></div>
+                    </div>
+                    <!-- Envelope Body (covers bottom half of flap) -->
+                    <div class="absolute bottom-0 left-0 w-full h-[52%] bg-pink-200"></div>
+                    <!-- Heart Seal -->
+                    <div class="absolute top-[85px] left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div class="pulse-heart text-4xl text-pink-600 transition-all duration-300 group-hover:scale-110">❤️</div>
+                    </div>
+                    <!-- "To:" text -->
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full px-4">
+                        <h2 class="text-2xl text-pink-700 truncate" style="font-family: 'Mochiy Pop One', sans-serif;">For Aisha</h2>
+                    </div>
+                </div>
+                <p class="text-gray-500 mt-4 text-lg" style="font-family: 'Nunito', sans-serif;">(Click the letter to open)</p>
+            </div>
+
+            <!-- STATE 1B: Kiss Envelope -->
+            <div id="kiss-envelope-container" class="text-center cursor-pointer group">
+                <div class="relative bg-white w-80 h-52 max-w-[90vw] rounded-lg shadow-2xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-gray-300/50">
+                    <!-- Envelope Flap (Triangle) -->
+                    <div class="absolute top-0 left-0 w-full h-full">
+                        <div class="absolute left-1/2 -translate-x-1/2 top-0 w-0 h-0 border-l-[160px] border-l-transparent border-r-[160px] border-r-transparent border-t-[100px] border-t-gray-400 group-hover:border-t-gray-300 transition-all"></div>
+                    </div>
+                    <!-- Envelope Body (covers bottom half of flap) -->
+                    <div class="absolute bottom-0 left-0 w-full h-[52%] bg-white"></div>
+                    <!-- Heart Seal -->
+                    <div class="absolute top-[85px] left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div class="pulse-heart text-4xl text-gray-600 transition-all duration-300 group-hover:scale-110">💌</div>
+                    </div>
+                    <!-- "To:" text (Empty) -->
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full px-4">
+                        <h2 class="text-2xl text-gray-700 truncate" style="font-family: 'Mochiy Pop One', sans-serif;">&nbsp;</h2> <!-- Empty space for height -->
+                    </div>
+                </div>
+                <p class="text-gray-500 mt-4 text-lg" style="font-family: 'Nunito', sans-serif;">(What's in this one?)</p>
+            </div>
+            
+            <!-- NEW: STATE 1C: Shayari Envelope -->
+            <div id="shayari-envelope-container" class="text-center cursor-pointer group">
+                <div class="relative bg-blue-200 w-80 h-52 max-w-[90vw] rounded-lg shadow-2xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-300/50">
+                    <!-- Envelope Flap (Triangle) -->
+                    <div class="absolute top-0 left-0 w-full h-full">
+                        <div class="absolute left-1/2 -translate-x-1/2 top-0 w-0 h-0 border-l-[160px] border-l-transparent border-r-[160px] border-r-transparent border-t-[100px] border-t-blue-400 group-hover:border-t-blue-300 transition-all"></div>
+                    </div>
+                    <!-- Envelope Body (covers bottom half of flap) -->
+                    <div class="absolute bottom-0 left-0 w-full h-[52%] bg-blue-200"></div>
+                    <!-- Heart Seal -->
+                    <div class="absolute top-[85px] left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div class="pulse-heart text-4xl text-blue-600 transition-all duration-300 group-hover:scale-110">📜</div>
+                    </div>
+                    <!-- "To:" text (Empty) -->
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full px-4">
+                        <h2 class="text-2xl text-blue-700 truncate" style="font-family: 'Mochiy Pop One', sans-serif;">&nbsp;</h2> <!-- Empty space for height -->
+                    </div>
+                </div>
+                <p class="text-gray-500 mt-4 text-lg" style="font-family: 'Nunito', sans-serif;">(And this one?)</p>
+            </div>
+
+        </div> <!-- End of letter-wrapper -->
+
+        <!-- STATE 2: Apology Card (Initially Hidden) -->
+        <main id="main-card" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-lg w-full text-center relative z-10 hidden">
+            
+            <!-- Pulsing Heart Icon -->
+            <div class="pulse-heart text-7xl mb-4 text-pink-500">💖</div>
+            
+            <!-- !!! IMPORTANT: Change this name !!! -->
+            <h1 class="text-3xl text-pink-600 mb-2">
+                Hey Aisha
+            </h1>
+            
+            <h2 class="text-xl text-gray-500 mb-6">I am so sorry babygirl.</h2>
+            
+            <!-- The apology message -->
+            <div class="text-left space-y-4 text-gray-700 text-lg">
+                <p>
+                    I was so stupid and angry, and I said things I never, ever should have. I didn't mean any of it, and there's no excuse.
+                </p>
+                <p>
+                    It was all my fault, and I hate myself for hurting you. You are the best thing ever happened to me and most amazing person ib my life. Maaf kardo please 🥺
+                </p>
+            </div>
+            
+            <!-- Button Container: This holds all the different states -->
+            <div class="mt-8 button-container">
+                
+                <!-- State 1: Initial Question -->
+                <div id="initial-buttons">
+                    <p class="text-lg text-gray-600 mb-4">Can you forgive me?</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="yes-button-1" class="yes-button w-full py-3 px-6 bg-pink-500 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-pink-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-300">
+                            Yes, I forgive you ❤️
+                        </button>
+                        <button id="no-button-1" class="w-full py-3 px-6 bg-gray-400 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-gray-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                            No, not yet...
+                        </button>
+                    </div>
+                </div>
+
+                <!-- State 2: Plea Message -->
+                <div id="plea-message" class="hidden">
+                    <p class="message-text text-2xl text-pink-600 mb-4">Please? 🥺</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="yes-button-2" class="yes-button w-full py-3 px-6 bg-pink-500 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-pink-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-300">
+                            ...Okay, fine.
+                        </button>
+                        <button id="no-button-2" class="w-full py-3 px-6 bg-gray-400 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-gray-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                            Still no.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- State 3: Jump Message -->
+                <div id="jump-message" class="hidden">
+                    <p class="message-text text-2xl text-red-500 mb-4">I'll jump if you say no! 😭</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="yes-button-3" class="yes-button w-full py-3 px-6 bg-pink-500 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-pink-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-300">
+                            OKAY! I forgive you! Don't!
+                        </button>
+                        <button id="no-button-3" class="w-full py-3 px-6 bg-red-600 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-red-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300">
+                            No. (Do it)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- State 4: Jump Animation -->
+                <div id="jump-animation-container" class="hidden">
+                    <!-- Jumper emoji will be added here by JS -->
+                </div>
+
+                <!-- NEW State 5: Force Yes -->
+                <div id="force-yes-message" class="hidden">
+                    <p class="message-text text-3xl text-gray-500 font-bold mb-4">... 😵</p>
+                    <p class="message-text text-2xl text-pink-600 mb-6">You have no choice but to say yes! So say it's a yes...</p>
+                    <button id="yes-button-4" class="yes-button w-full py-3 px-6 bg-pink-500 text-white rounded-xl shadow-lg text-lg transform transition-all duration-300 hover:bg-pink-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-300">
+                        Okay... it's a yes ❤️
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Final "Yes" Message -->
+            <div id="final-message-yes" class="hidden mt-8 text-3xl text-pink-700 font-bold transition-all duration-500 opacity-0 scale-90">
+                I LOVE YOU! ❤️
+            </div>
+
+            <!-- Final "No" Message (REMOVED) -->
+
+        </main>
+    </div>
+
+    <!-- Kiss Animation Overlay -->
+    <div id="kiss-overlay" class="hidden fixed inset-0 bg-pink-500/30 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div id="kiss-emoji" class="text-[20rem] opacity-0" style="transform: scale(0.5);">💋</div>
+    </div>
+
+    <!-- NEW: Shayari Overlay -->
+    <div id="shayari-overlay" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300 opacity-0">
+        <div id="shayari-paper" class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full relative transition-all duration-300 scale-90" style="transform: scale(0.9);">
+            <button id="close-shayari" class="absolute -top-3 -right-3 bg-white rounded-full p-1 shadow-lg text-3xl text-gray-600 hover:text-red-500 hover:scale-110 transition-all focus:outline-none">
+                <span class="block w-8 h-8">&times;</span>
+            </button>
+            <div class="space-y-4 text-center text-xl text-gray-700" style="font-family: 'Nunito', sans-serif;">
+                <p>Koi itna pyara kese ho sakta hai,</p>
+                <p>Sare ka sara ho sakta hai ❤️</p>
+                <p>Tujse na milne pe bhi udasi kam nai hoti,</p>
+                <p>Tere bina guzara kese ho sakta hai 💖</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. JavaScript for all the cute interactions -->
+    <script>
+        const heartContainer = document.getElementById('heart-container');
+        const mainCard = document.getElementById('main-card');
+        const envelopeContainer = document.getElementById('envelope-container');
+        const letterWrapper = document.getElementById('letter-wrapper');
+        const kissEnvelopeContainer = document.getElementById('kiss-envelope-container');
+        const kissOverlay = document.getElementById('kiss-overlay');
+        const kissEmoji = document.getElementById('kiss-emoji');
+        const shayariEnvelopeContainer = document.getElementById('shayari-envelope-container'); // NEW
+        const shayariOverlay = document.getElementById('shayari-overlay'); // NEW
+        const shayariPaper = document.getElementById('shayari-paper'); // NEW
+        const closeShayari = document.getElementById('close-shayari'); // NEW
+
+        // Button States
+        const initialButtons = document.getElementById('initial-buttons');
+        const pleaMessage = document.getElementById('plea-message');
+        const jumpMessage = document.getElementById('jump-message');
+        const jumpAnimationContainer = document.getElementById('jump-animation-container');
+        const forceYesMessage = document.getElementById('force-yes-message');
+
+        // Final Messages
+        const finalMessageYes = document.getElementById('final-message-yes');
+
+        // All "Yes" Buttons
+        const yesButtons = document.querySelectorAll('.yes-button');
+        
+        // "No" Buttons
+        const noButton1 = document.getElementById('no-button-1');
+        const noButton2 = document.getElementById('no-button-2');
+        const noButton3 = document.getElementById('no-button-3');
+
+        // --- 0. Apology Envelope Click Logic ---
+        envelopeContainer.addEventListener('click', () => {
+            // Animate envelope fading out
+            letterWrapper.classList.add('transition-all', 'duration-500', 'opacity-0', 'scale-90');
+            
+            // After animation, hide envelope and show card
+            setTimeout(() => {
+                letterWrapper.style.display = 'none';
+                
+                // Show the main card and background hearts
+                mainCard.classList.remove('hidden');
+                heartContainer.classList.remove('hidden');
+
+                // NOW start the floating hearts
+                setInterval(createFloatingHeart, 500);
+
+                // Animate the card fading in
+                mainCard.classList.add('transition-all', 'duration-500', 'opacity-0', 'scale-90');
+                setTimeout(() => {
+                    mainCard.classList.remove('opacity-0', 'scale-90');
+                }, 20); // Give browser a tick to register
+
+            }, 500); // Match envelope fade-out
+        });
+
+        // --- Kiss Envelope Click Logic ---
+        kissEnvelopeContainer.addEventListener('click', () => {
+            // Show the overlay
+            kissOverlay.classList.remove('hidden');
+            kissOverlay.classList.add('show');
+            
+            // Trigger the animation
+            kissEmoji.classList.add('animate-kiss');
+
+            // After animation, hide it all
+            setTimeout(() => {
+                kissOverlay.classList.remove('show');
+                
+                // Set a short delay to let the fade-out finish before hiding
+                setTimeout(() => {
+                    kissOverlay.classList.add('hidden');
+                    // Reset animation class for next time
+                    kissEmoji.classList.remove('animate-kiss');
+                    // Reset properties
+                    kissEmoji.style.opacity = '0';
+                    kissEmoji.style.transform = 'scale(0.5)';
+                }, 300); // Matches the opacity transition
+            }, 1300); // Matches the 'big-kiss' animation duration
+        });
+
+        // --- NEW: Shayari Envelope Click Logic ---
+        shayariEnvelopeContainer.addEventListener('click', () => {
+            shayariOverlay.classList.remove('hidden');
+            setTimeout(() => { // Wait for display block
+                shayariOverlay.classList.add('show');
+            }, 10);
+        });
+
+        // --- NEW: Close Shayari Logic ---
+        function closeShayariModal() {
+            shayariOverlay.classList.remove('show');
+            setTimeout(() => {
+                shayariOverlay.classList.add('hidden');
+            }, 300); // Match transition duration
+        }
+        
+        closeShayari.addEventListener('click', closeShayariModal);
+
+        // --- NEW: Close Shayari by clicking background ---
+        shayariOverlay.addEventListener('click', (e) => {
+            // Check if the click is on the overlay itself (the background), not the paper
+            if (e.target === shayariOverlay) {
+                closeShayariModal();
+            }
+        });
+
+
+        // --- 1. Background Floating Hearts ---
+        
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.animationDelay = Math.random() * 3 + 's';
+            heartContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+        // setInterval(createFloatingHeart, 500); // MOVED to envelope click
+
+        // --- 2. "Yes" Button Logic ---
+
+        yesButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Get click position for explosion
+                const clickX = e.clientX;
+                const clickY = e.clientY;
+                triggerYes(clickX, clickY);
+            });
+        });
+
+        function triggerYes(x, y) {
+            // Hide all button containers
+            initialButtons.style.display = 'none';
+            pleaMessage.style.display = 'none';
+            jumpMessage.style.display = 'none';
+            jumpAnimationContainer.style.display = 'none';
+            forceYesMessage.style.display = 'none'; // NEW: Hide this too
+            // REMOVED finalMessageNo.style.display = 'none';
+
+            // Show the final "Yes" message
+            finalMessageYes.classList.remove('hidden');
+            setTimeout(() => {
+                finalMessageYes.classList.add('opacity-100', 'scale-100');
+            }, 100);
+
+            // Trigger heart explosion from click
+            for (let i = 0; i < 30; i++) {
+                createExplosionHeart(x, y);
+            }
+        }
+
+        // --- 3. "No" Button Logic ---
+
+        noButton1.addEventListener('click', () => {
+            initialButtons.style.display = 'none';
+            pleaMessage.classList.remove('hidden');
+        });
+
+        noButton2.addEventListener('click', () => {
+            pleaMessage.style.display = 'none';
+            jumpMessage.classList.remove('hidden');
+        });
+
+        noButton3.addEventListener('click', () => {
+            jumpMessage.style.display = 'none';
+            jumpAnimationContainer.classList.remove('hidden');
+
+            // Create the jumper
+            const jumper = document.createElement('div');
+            jumper.innerHTML = '😭';
+            jumper.classList.add('jumper');
+            jumpAnimationContainer.appendChild(jumper);
+
+            // Show "Force Yes" message after animation
+            setTimeout(() => {
+                jumpAnimationContainer.style.display = 'none'; // Hide animation
+                forceYesMessage.classList.remove('hidden'); // Show new message
+            }, 1500); // 1.5s, matches 'fall' animation
+        });
+
+
+        // --- 4. Heart Explosion Function ---
+
+        function createExplosionHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('pop-heart');
+            
+            const emojis = ['💖', '💕', '❤️', '🥰', '😍'];
+            heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+
+            const randomX = (Math.random() - 0.5) * 400;
+            const randomY = (Math.random() - 0.5) * 400;
+            
+            heart.style.setProperty('--tx', (x + randomX) + 'px');
+            heart.style.setProperty('--ty', (y + randomY) + 'px');
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
+        }
+
+    </script>
+</body>
+</html>
