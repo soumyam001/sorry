@@ -3,868 +3,836 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I'm Sorry My Love 💕</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Happy Birthday Aisha!</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            purple: '#4c1d95',
+                            pink: '#be185d',
+                            gold: '#fbbf24',
+                            rose: '#fda4af',
+                            sepia: '#5D4037',
+                            paper: '#f1e6c6'
+                        }
+                    },
+                    fontFamily: {
+                        script: ['"Great Vibes"', 'cursive'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                        tech: ['"Orbitron"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* --- RESET & BASIC --- */
+        :root {
+            --cursor-size: 20px;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #fff;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            cursor: none; /* Hide default cursor */
+            scroll-behavior: auto; /* Handled by JS for smoothness */
+        }
+        
+        body.letter-open {
+            overflow: hidden; /* Prevent scrolling when letter is open */
         }
 
-        .heart {
-            position: fixed;
-            color: #ff69b4;
-            font-size: 20px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #be185d, #4c1d95);
+            border-radius: 5px;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(190, 24, 93, 0.2);
+        }
+
+        /* --- CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
             pointer-events: none;
-            animation: float 4s ease-in-out infinite;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: #fbbf24; }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 2px solid rgba(251, 191, 36, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
             opacity: 0;
-            z-index: 1;
+            transform: translateY(50px) scale(0.95);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #be185d, 0 0 30px #be185d, 0 0 40px #be185d;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+        /* --- ENVELOPE (Trigger) --- */
+        .envelope-container { perspective: 1000px; cursor: pointer; }
+        .envelope {
+            position: relative; width: 300px; height: 200px; background: #fee2e2; 
+            border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.5s;
         }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            padding: 40px 20px;
+        @media (max-width: 400px) {
+            .envelope { width: 260px; height: 180px; }
+            .flap { border-left-width: 130px !important; border-right-width: 130px !important; border-top-width: 90px !important; }
         }
-
-        .sorry-box {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            padding: 50px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            margin: 20px auto;
-            max-width: 800px;
-            animation: fadeInUp 1s ease;
+        .envelope:hover { transform: scale(1.05); }
+        .flap {
+            position: absolute; top: 0; left: 0; width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #fecaca;
+            transform-origin: top; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 20;
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .envelope.open .flap { transform: rotateX(180deg); z-index: 0; }
+        
+        .letter-preview {
+            position: absolute; bottom: 0; width: 90%; height: 80%; background: #fff;
+            z-index: 10; transition: transform 0.6s 0.4s ease-out;
+            border-radius: 4px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
         }
+        .envelope.open .letter-preview { transform: translateY(-100px); }
 
-        .main-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #ff8787, #ffa07a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 30px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .apology-card {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transform: translateY(0);
-            transition: all 0.3s ease;
-        }
-
-        .apology-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .apology-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ff6b6b;
-            margin-bottom: 15px;
-        }
-
-        .apology-text {
-            font-size: 1.2rem;
-            color: #333;
-            line-height: 1.8;
-        }
-
-        .kiss-button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
-            color: white;
-            border: none;
-            padding: 20px 50px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-            transition: all 0.3s ease;
-            margin: 20px 10px;
-        }
-
-        .kiss-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
-        }
-
-        .kiss-counter {
-            font-size: 2rem;
-            color: #ff6b6b;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .promise-section {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 30px 0;
-        }
-
-        .promise-item {
-            font-size: 1.3rem;
-            color: #555;
-            margin: 15px 0;
-            padding-left: 40px;
-            position: relative;
-        }
-
-        .promise-item:before {
-            content: "💖";
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-        }
-
-        .forgive-button {
-            background: linear-gradient(45deg, #56ab2f, #a8e063);
-            color: white;
-            border: none;
-            padding: 25px 60px;
-            font-size: 1.8rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(86, 171, 47, 0.4);
-            transition: all 0.3s ease;
-            margin: 30px 0;
-        }
-
-        .forgive-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(86, 171, 47, 0.6);
-        }
-
-        .surprise-box {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px 0;
-            border: 3px dashed #ff6b6b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .surprise-box:hover {
-            background: #fff5f5;
-            transform: rotate(2deg);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .love-letter {
-            background: #fff9e6;
-            border-left: 5px solid #ffd700;
-            padding: 30px;
-            font-style: italic;
-            line-height: 2;
-            margin: 20px 0;
-            border-radius: 10px;
-        }
-
-        .photo-frame {
-            border: 10px solid white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 500px;
-            background: white;
+        /* --- FULLSCREEN LETTER MODAL RESPONSIVE --- */
+        #letter-modal {
+            position: fixed; inset: 0; z-index: 11000;
+            background: rgba(0, 0, 0, 0.85); /* Darker for better focus */
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.8s;
             padding: 20px;
         }
+        #letter-modal.active { opacity: 1; pointer-events: auto; }
 
-        .countdown {
-            font-size: 1.5rem;
-            color: #ff6b6b;
-            text-align: center;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .spinning-heart {
-            display: inline-block;
-            animation: spin 2s linear infinite;
-            font-size: 3rem;
-            margin: 20px;
-        }
-
-        .bubble {
-            position: fixed;
-            bottom: -100px;
-            background: rgba(255, 182, 193, 0.7);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-            animation: rise 6s ease-in-out infinite;
-        }
-
-        @keyframes rise {
-            to {
-                bottom: 100vh;
-                opacity: 0;
-            }
-        }
-
-        .final-message {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-            color: white;
-            padding: 50px;
-            border-radius: 30px;
-            text-align: center;
-            font-size: 1.5rem;
-            line-height: 2;
-            margin: 30px 0;
-            box-shadow: 0 20px 60px rgba(255, 107, 107, 0.4);
-        }
-
-        .game-section {
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            border-radius: 30px;
-            padding: 50px;
-            margin: 30px 0;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(253, 203, 110, 0.4);
-        }
-
-        .slap-character {
-            width: 300px;
-            height: 300px;
-            margin: 30px auto;
-            cursor: pointer;
-            transition: all 0.1s ease;
+        /* Folded Paper Animation Wrapper */
+        .letter-wrapper {
             position: relative;
+            width: 100%; max-width: 600px;
+            perspective: 2000px;
+            will-change: transform;
+            display: flex; justify-content: center;
         }
 
-        .slap-character:active {
-            transform: scale(0.95);
+        /* The actual vintage paper */
+        .vintage-paper {
+            background-color: #f1e6c6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(93, 64, 55, 0.03) 20px, transparent 25px),
+                radial-gradient(circle at 90% 80%, rgba(93, 64, 55, 0.03) 40px, transparent 45px),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            color: #5D4037;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            border-radius: 4px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform-origin: center;
+            
+            /* Responsive Dimensions */
+            width: 100%;
+            max-height: 85vh; /* Prevent overflowing screen height */
+            overflow-y: auto; /* Scroll inside paper if too long */
+            scrollbar-width: thin;
+            scrollbar-color: #d4c5a0 transparent;
+
+            transform: scaleY(0.05) scaleX(0.8);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s ease-in;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0) rotate(0deg); }
-            25% { transform: translateX(-10px) rotate(-5deg); }
-            75% { transform: translateX(10px) rotate(5deg); }
-        }
-
-        .shaking {
-            animation: shake 0.3s ease-in-out;
-        }
-
-        .slap-counter {
-            font-size: 2.5rem;
-            color: #d63031;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-
-        .reaction-bubble {
-            position: absolute;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #d63031;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            pointer-events: none;
-            animation: floatUp 2s ease-out forwards;
-            z-index: 100;
-        }
-
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px);
+        /* Mobile Letter Fixes */
+        @media (max-width: 640px) {
+            .vintage-paper {
+                padding: 60px 20px 30px 20px; /* Top padding for close button */
+                font-size: 1.1rem;
+                line-height: 1.6;
             }
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
+        #letter-modal.active .vintage-paper {
+            transform: scaleY(1) scaleX(1);
+            opacity: 1;
+            transition-delay: 0.2s;
         }
 
-        .wiggling {
-            animation: wiggle 0.5s ease-in-out infinite;
+        /* Close Button - Fixed to Viewport on Mobile for easy access, sticky inside paper on Desktop */
+        .close-letter {
+            position: absolute; 
+            top: 10px; 
+            right: 10px;
+            width: 44px; height: 44px; /* Larger hit area */
+            background: rgba(241, 230, 198, 0.9);
+            border: 2px solid #5D4037; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Playfair Display', serif; font-size: 24px; color: #5D4037;
+            cursor: pointer; z-index: 100;
+            opacity: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            
+            /* Sticky positioning so it stays visible during scroll */
+            position: sticky;
+            float: right;
+            margin-bottom: 20px;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+        #letter-modal.active .close-letter { opacity: 1; transition-delay: 0.5s; }
+        
+        /* Content Fade */
+        .letter-content { opacity: 0; transition: opacity 1s ease-in; }
+        #letter-modal.active .letter-content { opacity: 1; transition-delay: 1.2s; }
 
-        .bouncing {
-            animation: bounce 0.6s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 5px #ff6b6b; }
-            50% { box-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff1493; }
-        }
-
-        .glowing {
-            animation: glow 1.5s ease-in-out infinite;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: confettiFall 3s ease-out forwards;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        .sparkle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #fff, transparent);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: sparkleAnim 1s ease-out forwards;
-        }
-
-        @keyframes sparkleAnim {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(2);
-                opacity: 0;
-            }
+        /* Loading Screen */
+        #loader {
+            position: fixed; inset: 0; background: #0f172a; z-index: 20000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="sorry-box">
-            <h1 class="main-title">I'M SO SORRY MY LOVE 💕</h1>
-            
-            <div class="text-center">
-                <div class="spinning-heart">💗</div>
-                <div class="countdown" id="countdown"></div>
-            </div>
+<body class="font-sans antialiased text-slate-200">
 
-            <div class="love-letter">
-                <p>My dearest,</p>
-                <p>I know I messed up badly. I promised you quality time together, and instead I chose gaming with friends and cut our video call short. Then, instead of listening to your feelings, I shouted at you. That was so wrong of me. You deserved my time, my attention, and my respect. For the past 3 days, I've been thinking about how much I hurt you, and I'm truly, deeply sorry.</p>
-                <p>You mean the world to me, and I took you for granted. I'm here to make things right. 💕</p>
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="text-center">
+            <div class="mb-4 text-6xl text-brand-pink animate-bounce">
+                <i class="fas fa-heart"></i>
             </div>
-
-            <h2 class="text-center my-5" style="color: #ff6b6b; font-size: 2.5rem;">100 Ways I'm Sorry 💔</h2>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #1</div>
-                <div class="apology-text">I'm sorry for breaking my promise. Your time is precious and I should have honored our plans.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #2</div>
-                <div class="apology-text">I'm sorry for choosing my friends over you. You should always come first.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #3</div>
-                <div class="apology-text">I'm sorry for cutting our call short. Every moment with you is special and I wasted it.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #4</div>
-                <div class="apology-text">I'm sorry for shouting at you when you were already hurt. You needed comfort, not anger.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #5</div>
-                <div class="apology-text">I'm sorry for not talking to you properly for 3 days. My silence only made things worse.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #6</div>
-                <div class="apology-text">I'm sorry for not being emotionally available when you needed me most.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #7</div>
-                <div class="apology-text">I'm sorry for taking your love for granted. You deserve so much better.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #8</div>
-                <div class="apology-text">I'm sorry for making excuses instead of owning my mistake immediately.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #9</div>
-                <div class="apology-text">I'm sorry for the tears I caused. Your happiness means everything to me.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #10</div>
-                <div class="apology-text">I'm sorry for being a terrible boyfriend in that moment. I promise to do better.</div>
-            </div>
-
-            <div class="text-center my-5">
-                <button class="kiss-button" onclick="sendKiss()">Send A Kiss 💋</button>
-                <div class="kiss-counter">Kisses Sent: <span id="kissCount">0</span> 💕</div>
-                <p style="color: #666; font-style: italic;">Click as many times as you want! Each kiss is for you! 😘</p>
-            </div>
-
-            <div class="surprise-box" onclick="revealSurprise(1)">
-                <h3 style="color: #ff6b6b; text-align: center;">🎁 Click for Surprise #1 🎁</h3>
-            </div>
-            <div id="surprise1" class="hidden">
-                <div class="photo-frame">
-                    <h3 style="color: #ff6b6b; text-align: center; margin-bottom: 20px;">Things I Love About You ❤️</h3>
-                    <ul style="font-size: 1.2rem; line-height: 2;">
-                        <li>Your beautiful smile that brightens my day ☀️</li>
-                        <li>The way you care about our relationship 💑</li>
-                        <li>Your patience with me (even when I don't deserve it) 🙏</li>
-                        <li>Your voice that I could listen to forever 🎵</li>
-                        <li>How you make me want to be a better person 🌟</li>
-                        <li>Your kindness and gentle heart 💝</li>
-                        <li>The way you understand me like no one else 🤝</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="surprise-box" onclick="revealSurprise(2)">
-                <h3 style="color: #ff6b6b; text-align: center;">🎁 Click for Surprise #2 🎁</h3>
-            </div>
-            <div id="surprise2" class="hidden">
-                <div class="promise-section">
-                    <h3 style="color: #ff6b6b; text-align: center; margin-bottom: 30px; font-size: 2rem;">My Promises To You 💍</h3>
-                    <div class="promise-item">I promise to always honor our plans and never cancel on you for my friends again</div>
-                    <div class="promise-item">I promise to give you my full attention during our video calls</div>
-                    <div class="promise-item">I promise to never shout at you, no matter how frustrated I am</div>
-                    <div class="promise-item">I promise to communicate better and talk things through instead of going silent</div>
-                    <div class="promise-item">I promise to prioritize YOU, because you're the most important person in my life</div>
-                    <div class="promise-item">I promise to listen when you're upset and comfort you instead of getting defensive</div>
-                    <div class="promise-item">I promise to be the boyfriend you deserve - patient, loving, and respectful</div>
-                    <div class="promise-item">I promise to work on myself every day to be better for us</div>
-                </div>
-            </div>
-
-            <div class="surprise-box" onclick="revealSurprise(3)">
-                <h3 style="color: #ff6b6b; text-align: center;">🎁 Click for Surprise #3 🎁</h3>
-            </div>
-            <div id="surprise3" class="hidden">
-                <div class="apology-card">
-                    <h3 style="color: #ff6b6b; text-align: center; margin-bottom: 20px;">Virtual Date Night Plan 🌹</h3>
-                    <p style="font-size: 1.2rem; line-height: 2;">To make it up to you, I'm planning a special virtual date night:</p>
-                    <ul style="font-size: 1.1rem; line-height: 2; margin-top: 20px;">
-                        <li>📱 A dedicated 3-hour video call, just us - NO interruptions, NO games</li>
-                        <li>🍕 We'll order our favorite food at the same time and eat "together"</li>
-                        <li>🎬 Watch your favorite movie together on screen share</li>
-                        <li>🎮 Play some fun online games together (only after our quality time!)</li>
-                        <li>💌 I'll read you a poem I wrote for you</li>
-                        <li>🌟 End the night talking about our dreams and future together</li>
-                    </ul>
-                    <p style="font-size: 1.2rem; margin-top: 20px; text-align: center; color: #ff6b6b; font-weight: bold;">You pick the day and time - I'm all yours! 💕</p>
-                </div>
-            </div>
-
-            <div class="game-section">
-                <h2 style="color: #d63031; font-size: 3rem; margin-bottom: 20px;">🎮 PUNISHMENT GAME 🎮</h2>
-                <h3 style="color: #d63031; font-size: 1.8rem; margin-bottom: 30px;">Slap Me As Many Times As You Want! 😭</h3>
-                <p style="font-size: 1.3rem; color: #666; margin-bottom: 30px;">I deserve it for what I did! Click on me to slap me! 👋</p>
-                
-                <div class="slap-counter">Slaps: <span id="slapCount">0</span> 👋</div>
-                
-                <div class="slap-character" onclick="slapMe()">
-                    <svg viewBox="0 0 200 200" style="width: 100%; height: 100%;">
-                        <!-- Head -->
-                        <circle cx="100" cy="100" r="80" fill="#ffd1a3" stroke="#333" stroke-width="2"/>
-                        
-                        <!-- Left Eye (crying) -->
-                        <circle cx="70" cy="85" r="8" fill="#333"/>
-                        <path d="M 70 95 Q 68 105, 66 115" stroke="#4a9eff" stroke-width="3" fill="none" stroke-linecap="round">
-                            <animate attributeName="d" 
-                                values="M 70 95 Q 68 105, 66 115; M 70 95 Q 68 105, 66 125; M 70 95 Q 68 105, 66 115" 
-                                dur="1s" repeatCount="indefinite"/>
-                        </path>
-                        
-                        <!-- Right Eye (crying) -->
-                        <circle cx="130" cy="85" r="8" fill="#333"/>
-                        <path d="M 130 95 Q 132 105, 134 115" stroke="#4a9eff" stroke-width="3" fill="none" stroke-linecap="round">
-                            <animate attributeName="d" 
-                                values="M 130 95 Q 132 105, 134 115; M 130 95 Q 132 105, 134 125; M 130 95 Q 132 105, 134 115" 
-                                dur="1s" repeatCount="indefinite"/>
-                        </path>
-                        
-                        <!-- Sad Mouth -->
-                        <path d="M 70 130 Q 100 120, 130 130" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        
-                        <!-- Eyebrows (sad) -->
-                        <path d="M 55 70 Q 70 65, 85 70" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        <path d="M 115 70 Q 130 65, 145 70" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        
-                        <!-- Body -->
-                        <rect x="70" y="170" width="60" height="30" fill="#667eea" rx="5"/>
-                        
-                        <!-- Red Slap Mark (will appear on slap) -->
-                        <g id="slapMark" style="opacity: 0;">
-                            <ellipse cx="130" cy="100" rx="25" ry="20" fill="#ff6b6b" opacity="0.6" transform="rotate(-20 130 100)"/>
-                        </g>
-                    </svg>
-                </div>
-                
-                <p style="font-size: 1.2rem; color: #d63031; font-weight: bold; margin-top: 20px;">
-                    Click me! I deserve your anger! 😭💔
-                </p>
-                <p style="font-size: 1rem; color: #666; margin-top: 10px; font-style: italic;">
-                    (Don't worry, it's just a game but it might make you feel better! 😊)
-                </p>
-            </div>
-
-            <div class="text-center my-5">
-                <h2 style="color: #ff6b6b; margin: 40px 0;">More Apologies From My Heart 💝</h2>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #11-20</div>
-                <div class="apology-text">I'm sorry for every second of pain I caused you. For every tear, every moment of disappointment, every time I made you feel unimportant. You are the MOST important person to me.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #21-30</div>
-                <div class="apology-text">I'm sorry for not being the boyfriend I promised to be. For letting you down when you counted on me. For choosing temporary fun over our precious time together.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #31-40</div>
-                <div class="apology-text">I'm sorry for my ego and pride that stopped me from apologizing sooner. Three days without properly talking to you felt like forever, and it was all my fault.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #41-50</div>
-                <div class="apology-text">I'm sorry for the trust I broke. For making you question if you can count on me. I want to earn that trust back, one day at a time.</div>
-            </div>
-
-            <div class="apology-card">
-                <div class="apology-number">Sorry #51-100</div>
-                <div class="apology-text">I'm sorry for everything else I can't even put into words. For every way I hurt you, disappointed you, or let you down. You deserved better, and I'm committed to BEING better. I love you more than anything. 💕</div>
-            </div>
-
-            <div class="text-center my-5">
-                <button class="kiss-button" onclick="sendMoreKisses()">100 More Kisses! 💋💋💋</button>
-            </div>
-
-            <div class="final-message">
-                <h2 style="margin-bottom: 30px;">My Final Words 💌</h2>
-                <p>I know saying sorry isn't enough. I need to SHOW you through my actions that I've changed. I'm ready to put in the work to rebuild your trust and be the boyfriend you deserve.</p>
-                <p style="margin-top: 20px;">I miss you. I miss us. I miss your laugh, your smile, your voice. These 3 days without properly talking to you made me realize how empty my life feels without you in it.</p>
-                <p style="margin-top: 20px;">Please give me another chance to make this right. I love you with all my heart. ❤️</p>
-                <p style="margin-top: 30px; font-size: 2rem;">Forever yours,<br>Your Boyfriend 💕</p>
-            </div>
-
-            <div class="text-center my-5">
-                <button class="forgive-button" onclick="forgive()">I Forgive You ❤️</button>
-            </div>
-
-            <div id="forgiveness" class="hidden">
-                <div class="apology-card" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e); text-align: center;">
-                    <h2 style="color: #d63031; margin-bottom: 20px;">THANK YOU MY LOVE! 😭💕</h2>
-                    <p style="font-size: 1.3rem; line-height: 2;">I promise I won't let you down again! You're my everything and I'll spend every day proving that to you! I LOVE YOU SO MUCH! 💖💖💖</p>
-                    <div style="font-size: 4rem; margin: 30px 0;">🎉💑🎊💕✨</div>
-                </div>
+            <h2 class="text-2xl font-serif text-brand-gold tracking-widest animate-pulse">LOADING LOVE...</h2>
+            <div class="mt-4 w-64 h-2 bg-slate-800 rounded-full overflow-hidden relative">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-brand-pink to-brand-purple w-0 transition-all duration-[2000ms] ease-out"></div>
             </div>
         </div>
     </div>
 
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Canvas Background -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+    
+    <!-- Floating Audio Player -->
+    <div class="fixed bottom-6 right-6 z-50 glass rounded-full p-3 flex items-center gap-4 transition-all hover:scale-105 duration-300">
+        <div class="w-10 h-10 rounded-full bg-slate-900 border border-brand-pink flex items-center justify-center animate-spin-slow" id="vinyl">
+            <i class="fas fa-music text-brand-pink text-xs"></i>
+        </div>
+        <div class="hidden md:block">
+            <p class="text-xs text-brand-gold font-bold"></p>
+        </div>
+        <button id="play-btn" class="text-white hover:text-brand-pink transition"><i class="fas fa-play"></i></button>
+    </div>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-6 pt-32 pb-32">
+            
+            <div class="z-10 text-center space-y-8 mt-10">
+                <div class="inline-block relative px-4">
+                    <h1 class="font-script text-5xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-brand-pink via-purple-400 to-brand-gold pb-4 animate-float drop-shadow-2xl leading-tight py-4">
+                        Happy Birthday
+                    </h1>
+                </div>
+
+                <h2 class="font-script text-5xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-brand-pink via-purple-400 to-brand-gold py-6 drop-shadow-2xl tracking-wide relative min-h-[80px] mt-2 leading-tight">
+                    <span id="typewriter"></span>
+                </h2>
+
+                <!-- Countdown -->
+                <div class="glass p-6 rounded-2xl inline-flex flex-wrap justify-center gap-4 md:gap-8 mt-12 transition-all duration-1000 transform opacity-0 translate-y-10" id="countdown-container">
+                    <!-- JS will fill this -->
+                </div>
+                <!-- Special Message when Countdonw <= 0 -->
+                 <div id="bday-message" class="hidden text-4xl font-serif text-brand-gold animate-bounce">
+                    🎉 IT'S YOUR SPECIAL DAY! 🎉
+                 </div>
+
+                <div class="mt-16">
+                    <button id="start-btn" class="group relative px-10 py-4 rounded-full glass overflow-hidden inline-block hover:scale-105 transition duration-300">
+                        <span class="relative z-10 font-bold tracking-wider text-xl group-hover:text-brand-pink transition">START THE JOURNEY</span>
+                        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition duration-300"></div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+                <i class="fas fa-chevron-down text-2xl text-white/50"></i>
+            </div>
+        </section>
+
+        <!-- PHOTO GALLERY -->
+        <section id="gallery" class="min-h-screen py-20 px-4 md:px-10 relative">
+            <h2 class="text-center font-serif text-5xl mb-16 neon-text reveal">Our Beautiful Memories</h2>
+            <div class="columns-1 md:columns-3 gap-8 space-y-8 max-w-7xl mx-auto">
+                <!-- Memories -->
+                <div class="polaroid bg-white p-3 shadow-xl transform rotate-1 reveal break-inside-avoid">
+                    <img src="first.jpg" class="w-full h-full object-cover">
+                    <p class="text-slate-800 font-script text-2xl text-center mt-2">First Date ❤️</p>
+                </div>
+                 <div class="polaroid bg-white p-3 shadow-xl transform -rotate-2 reveal break-inside-avoid">
+                    <img src="justus.jpg" class="w-full h-full object-cover">
+                    <p class="text-slate-800 font-script text-2xl text-center mt-2">Just Us ✨</p>
+                </div>
+                <div class="polaroid bg-white p-3 shadow-xl transform rotate-2 reveal break-inside-avoid">
+                    <img src="myfav.jpg" class="w-full h-full object-cover">
+                    <p class="text-slate-800 font-script text-2xl text-center mt-2">My favourite you ❤️</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section id="timeline" class="min-h-screen py-20 px-4">
+            <h2 class="text-center font-serif text-5xl mb-20 neon-text reveal">Our Story</h2>
+            <div class="max-w-4xl mx-auto relative">
+                <!-- Center Line -->
+                <div class="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-brand-pink to-brand-purple rounded-full"></div>
+                
+                <!-- Event 1: Proposal -->
+                <div class="relative mb-20 reveal">
+                   <div class="flex flex-col md:flex-row items-start md:items-center w-full pl-12 md:pl-0">
+                       <div class="w-full md:w-5/12 hidden md:block"></div>
+                       
+                       <!-- Dot -->
+                       <div class="absolute md:relative left-[-1.35rem] md:left-auto md:mx-auto z-20 w-12 h-12 bg-brand-pink rounded-full border-4 border-slate-900 flex items-center justify-center shadow-lg shadow-brand-pink/50">
+                           <i class="fas fa-ring text-white"></i>
+                       </div>
+
+                       <div class="w-full md:w-5/12 glass-card p-6 rounded-xl border-l-4 border-brand-pink relative hover:scale-105 transition duration-300 md:ml-0 md:text-left">
+                           <h3 class="font-bold text-xl text-brand-gold font-serif">She Said Yes! 💍</h3>
+                           <p class="text-brand-rose text-sm mb-2 font-mono">14th November, 2024</p>
+                           <p class="text-sm text-slate-300">The most magical moment when you accepted my proposal. My life truly began that day.</p>
+                       </div>
+                   </div>
+                </div>
+
+                <!-- Event 2: First Date -->
+                <div class="relative mb-20 reveal">
+                   <div class="flex flex-col md:flex-row items-start md:items-center w-full pl-12 md:pl-0">
+                       <div class="w-full md:w-5/12 glass-card p-6 rounded-xl border-l-4 md:border-l-0 md:border-r-4 border-brand-purple relative hover:scale-105 transition duration-300 md:text-right">
+                           <h3 class="font-bold text-xl text-brand-gold font-serif">First Date 🍷</h3>
+                           <p class="text-brand-rose text-sm mb-2 font-mono">5th July, 2025</p>
+                           <p class="text-sm text-slate-300">A beautiful day I'll never forget. Just you, me, and endless memories.</p>
+                       </div>
+                       
+                       <!-- Dot -->
+                        <div class="absolute md:relative left-[-1.35rem] md:left-auto md:mx-auto z-20 w-12 h-12 bg-brand-purple rounded-full border-4 border-slate-900 flex items-center justify-center shadow-lg shadow-brand-purple/50">
+                           <i class="fas fa-wine-glass text-white"></i>
+                       </div>
+                       
+                       <div class="w-full md:w-5/12 hidden md:block"></div>
+                   </div>
+                </div>
+
+                <!-- Event 3: Birthday -->
+                <div class="relative mb-20 reveal">
+                   <div class="flex flex-col md:flex-row items-start md:items-center w-full pl-12 md:pl-0">
+                       <div class="w-full md:w-5/12 hidden md:block"></div>
+                       
+                       <!-- Dot -->
+                       <div class="absolute md:relative left-[-1.35rem] md:left-auto md:mx-auto z-20 w-12 h-12 bg-brand-gold rounded-full border-4 border-slate-900 flex items-center justify-center shadow-lg shadow-brand-gold/50">
+                           <i class="fas fa-gift text-white"></i>
+                       </div>
+
+                       <div class="w-full md:w-5/12 glass-card p-6 rounded-xl border-l-4 border-brand-gold relative hover:scale-105 transition duration-300">
+                           <h3 class="font-bold text-xl text-brand-gold font-serif">Your Special Day 🎂</h3>
+                           <p class="text-brand-rose text-sm mb-2 font-mono">11th December, 2025</p>
+                           <p class="text-sm text-slate-300">Celebrating the most amazing person in the world. Happy Birthday my love!</p>
+                       </div>
+                   </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- REASONS -->
+        <section id="reasons" class="py-20 px-4 bg-brand-dark/50">
+            <h2 class="text-center font-serif text-5xl mb-10 neon-text reveal">Why I Love You</h2>
+            <div class="max-w-2xl mx-auto glass p-10 rounded-2xl relative min-h-[300px] flex items-center justify-center text-center reveal">
+                <button id="prev-reason" class="absolute left-4 text-3xl text-brand-pink hover:scale-125 transition"><i class="fas fa-chevron-left"></i></button>
+                <div id="reason-content" class="text-3xl font-script text-white transition-opacity duration-500">
+                    "Your smile makes my day ❤️"
+                </div>
+                <button id="next-reason" class="absolute right-4 text-3xl text-brand-pink hover:scale-125 transition"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <!-- GAMES -->
+        <section id="games" class="py-20 px-4">
+             <h2 class="text-center font-serif text-5xl mb-16 neon-text reveal">Fun & Games</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="glass-card p-8 rounded-2xl text-center reveal">
+                    <h3 class="text-2xl font-bold mb-4 text-brand-rose">Love Calculator</h3>
+                    <button id="calc-love" class="w-full py-3 bg-brand-pink rounded-lg font-bold">CALCULATE</button>
+                    <div id="love-res" class="mt-4 text-4xl hidden">100% ❤️</div>
+                </div>
+                <div class="glass-card p-8 rounded-2xl text-center reveal relative min-h-[250px]" id="balloon-game">
+                    <h3 class="text-2xl font-bold mb-4 text-brand-rose">Pop the Hearts</h3>
+                    <p class="text-sm text-gray-400">Score: <span id="score">0</span></p>
+                    <div id="balloon-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+                </div>
+             </div>
+        </section>
+
+        <!-- LETTER SECTION -->
+        <section id="letter-section" class="min-h-[80vh] py-20 px-4 flex flex-col items-center justify-center">
+            
+            <h2 class="text-center font-serif text-4xl mb-10 text-white/80 reveal">I Wrote Something For You...</h2>
+            
+            <!-- Envelope Trigger -->
+            <div class="envelope-container reveal" id="envelope-trigger">
+                 <div class="envelope">
+                     <div class="flap"></div>
+                     <!-- Small preview card sliding out -->
+                     <div class="letter-preview"></div>
+                     <div class="text-brand-pink text-5xl z-10"><i class="fas fa-heart"></i></div>
+                 </div>
+                 <p class="text-center mt-5 text-brand-gold font-serif italic tracking-widest text-sm uppercase">Click to Open</p>
+            </div>
+
+            <!-- Cake -->
+            <div class="mt-20 text-center reveal">
+                <div id="cake-interaction" class="cursor-pointer text-8xl transition transform hover:scale-110 inline-block relative">
+                    🎂
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 flex gap-1" id="candles">
+                         <div class="w-2 h-6 bg-yellow-400 rounded-full animate-pulse"></div>
+                         <div class="w-2 h-6 bg-yellow-400 rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+                <p class="mt-4 text-slate-400 text-sm">Make a wish & click the cake!</p>
+            </div>
+            
+        </section>
+
+        <footer class="py-10 text-center text-slate-500 text-sm">
+            <p>Made with ❤️ forever.</p>
+        </footer>
+    </main>
+
+    <!-- === LETTER MODAL === -->
+    <div id="letter-modal" role="dialog" aria-modal="true">
+        <div class="letter-wrapper">
+            <!-- Vintage Paper -->
+            <div class="vintage-paper">
+                <!-- Close Button -->
+                <button class="close-letter" aria-label="Close letter">✕</button>
+                
+                <div class="letter-content">
+                    <div class="text-right text-base font-serif mb-8 text-brand-sepia opacity-70">
+                        11th December, 2025
+                    </div>
+                    
+                    <h3 class="text-4xl mb-6 text-brand-sepia font-bold">My Dearest Aisha,</h3>
+                    
+                    <p class="mb-4">
+                        As I sit down to write this, I realize how difficult it is to put into words just how much you mean to me.
+                    </p>
+                    <p class="mb-4">
+                        Your smile truly does light up my world, and your kindness inspires me every single day. Watching you grow another year older is the greatest gift I could ask for.
+                    </p>
+                    <p class="mb-4">
+                        I promise to always be there to handle your "cutest anger" and to cherish every moment we share. You are my universe.
+                    </p>
+                    <p class="mb-8">
+                        May this birthday be as beautiful, magical, and wonderful as you are.
+                    </p>
+                    
+                    <div class="text-right mt-12 transform -rotate-2">
+                        <p class="text-2xl">With all my love,</p>
+                        <p class="text-4xl font-bold text-brand-pink mt-2" style="font-family:'Great Vibes'">Your Love</p>
+                    </div>
+                </div>
+                
+                <!-- Fold Visuals -->
+                <div class="crease crease-top"></div>
+                <div class="crease crease-bottom"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
     <script>
-        // Create falling hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            document.body.appendChild(heart);
-            
+        // --- PRELOADER ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            document.getElementById('progress-bar').style.width = '100%';
             setTimeout(() => {
-                heart.remove();
-            }, 4000);
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    initTypewriter();
+                }, 1000);
+            }, 2000);
+        });
+
+        // --- SMOOTH SCROLL ---
+        document.getElementById('start-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            smoothScroll('#gallery', 2000); // 2 seconds duration
+        });
+
+        function smoothScroll(target, duration) {
+            const targetEl = document.querySelector(target);
+            if(!targetEl) return;
+            const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
+            const startPos = window.pageYOffset;
+            const distance = targetPos - startPos;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if(startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = easeInOutCubic(timeElapsed, startPos, distance, duration);
+                window.scrollTo(0, run);
+                if(timeElapsed < duration) requestAnimationFrame(animation);
+            }
+
+            // Cubic Bezier Easing
+            // t=time, b=start, c=change, d=duration
+            function easeInOutCubic(t, b, c, d) {
+                t /= d/2;
+                if (t < 1) return c/2*t*t*t + b;
+                t -= 2;
+                return c/2*(t*t*t + 2) + b;
+            }
+
+            requestAnimationFrame(animation);
         }
 
-        setInterval(createHeart, 300);
+        // --- LETTER LOGIC ---
+        const envelopeTrigger = document.getElementById('envelope-trigger');
+        const letterModal = document.getElementById('letter-modal');
+        const closeLetterBtn = document.querySelector('.close-letter');
+        const envelopeEl = document.querySelector('.envelope');
 
-        // Create bubbles
-        function createBubble() {
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            const size = Math.random() * 60 + 20;
-            bubble.style.width = size + 'px';
-            bubble.style.height = size + 'px';
-            bubble.style.left = Math.random() * 100 + 'vw';
-            bubble.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            document.body.appendChild(bubble);
+        envelopeTrigger.addEventListener('click', () => {
+            // Stage 1: Open Flap
+            envelopeEl.classList.add('open');
             
+            // Stage 2: Wait for slide out, then open modal
             setTimeout(() => {
-                bubble.remove();
-            }, 6000);
-        }
+                letterModal.classList.add('active'); // Shows overlay and scales up paper
+                document.body.classList.add('letter-open');
+            }, 800);
+        });
 
-        setInterval(createBubble, 500);
+        closeLetterBtn.addEventListener('click', closeLetter);
+        
+        // Close on clicking outside
+        letterModal.addEventListener('click', (e) => {
+             if(e.target === letterModal) closeLetter();
+        });
+        
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape' && letterModal.classList.contains('active')) closeLetter();
+        });
 
-        // Kiss counter
-        let kissCount = 0;
-        function sendKiss() {
-            kissCount++;
-            document.getElementById('kissCount').textContent = kissCount;
+        function closeLetter() {
+            letterModal.classList.remove('active');
+            document.body.classList.remove('letter-open');
             
-            // Create flying kiss animation
-            const kiss = document.createElement('div');
-            kiss.innerHTML = '💋';
-            kiss.style.position = 'fixed';
-            kiss.style.left = '50%';
-            kiss.style.top = '50%';
-            kiss.style.fontSize = '3rem';
-            kiss.style.zIndex = '9999';
-            kiss.style.pointerEvents = 'none';
-            kiss.style.animation = 'float 2s ease-out forwards';
-            document.body.appendChild(kiss);
-            
-            setTimeout(() => kiss.remove(), 2000);
+            // Reset envelope after animation finishes
+            setTimeout(() => {
+                envelopeEl.classList.remove('open');
+            }, 800);
         }
 
-        function sendMoreKisses() {
-            for(let i = 0; i < 100; i++) {
-                setTimeout(() => sendKiss(), i * 30);
-            }
+        // --- BIRTHDAY DATE LOGIC ---
+        // Target: Dec 11
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        let targetDate = new Date(currentYear, 11, 11); // Month is 0-indexed: 11 = Dec
+        
+        // If passed, move to next year
+        if (now.getTime() > targetDate.getTime() + (24*60*60*1000)) { 
+             targetDate.setFullYear(currentYear + 1);
         }
-
-        // Reveal surprises
-        function revealSurprise(num) {
-            const surprise = document.getElementById('surprise' + num);
-            surprise.classList.toggle('hidden');
-        }
-
-        // Forgiveness
-        function forgive() {
-            document.getElementById('forgiveness').classList.remove('hidden');
-            document.getElementById('forgiveness').scrollIntoView({ behavior: 'smooth' });
-            
-            // Celebration
-            for(let i = 0; i < 50; i++) {
-                setTimeout(createHeart, i * 100);
-            }
-        }
-
-        // Countdown since the incident
+        
+        const countdownEl = document.getElementById('countdown-container');
+        
         function updateCountdown() {
-            const startDate = new Date();
-            startDate.setDate(startDate.getDate() - 3);
-            const now = new Date();
-            const diff = now - startDate;
+            const currentTime = new Date();
+            const diff = targetDate - currentTime;
             
+            // Birthday Logic (If today is Dec 11)
+            if (now.getDate() === 11 && now.getMonth() === 11) {
+                countdownEl.style.display = 'none';
+                document.getElementById('bday-message').classList.remove('hidden');
+                return;
+            }
+            
+            // Reveal countdown
+            if(countdownEl.classList.contains('opacity-0')) {
+                countdownEl.classList.remove('opacity-0', 'translate-y-10');
+            }
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
-            document.getElementById('countdown').innerHTML = 
-                `It's been ${days} days, ${hours} hours, and ${minutes} minutes since I messed up. Every second without you feels like forever. 💔`;
+            renderTimeUnit(days, 'Days');
+            renderTimeUnit(hours, 'Hours');
+            renderTimeUnit(minutes, 'Mins');
+            renderTimeUnit(seconds, 'Secs');
+        }
+        
+        function renderTimeUnit(val, label) {
+             // Simple clear and rebuild for cleaner code, optimization possible if needed
+             // But usually best to just update innerText of specific IDs. 
+             // Reusing previous logic slightly modified:
+             let container = document.getElementById('cnt-'+label);
+             if(!container) {
+                 container = document.createElement('div');
+                 container.id = 'cnt-'+label;
+                 container.className = 'text-center min-w-[80px]';
+                 container.innerHTML = `<span class="block text-4xl font-mono text-brand-gold" id="val-${label}">00</span>
+                                        <span class="text-xs uppercase tracking-widest text-slate-400">${label}</span>`;
+                 countdownEl.appendChild(container);
+             }
+             document.getElementById('val-'+label).innerText = val < 10 ? '0'+val : val;
         }
 
-        updateCountdown();
-        setInterval(updateCountdown, 60000);
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Init immediately
 
-        // Slapping Game
-        let slapCount = 0;
-        const reactions = [
-            "OUCH! 😭",
-            "I'M SORRY! 💔",
-            "I DESERVED THAT! 😢",
-            "OW OW OW! 😣",
-            "PLEASE FORGIVE ME! 🙏",
-            "THAT HURT! 😖",
-            "I'M SO SORRY! 💔",
-            "OWW! I WON'T DO IT AGAIN! 😭",
-            "OUCH! YOU'RE RIGHT TO BE ANGRY! 😢",
-            "AHH! I MESSED UP! 💔",
-            "OW! I'M AN IDIOT! 😣",
-            "SORRY SORRY SORRY! 😭",
-            "I DESERVE THIS! 😢",
-            "OUCH! I LOVE YOU! 💕",
-            "OWW! FORGIVE ME! 🙏",
-            "THAT STINGS! 😖",
-            "I'M THE WORST BOYFRIEND! 😭",
-            "OUCH! I'LL MAKE IT UP TO YOU! 💔",
-            "AHH! I PROMISE TO CHANGE! 😢",
-            "OW! YOU MEAN EVERYTHING TO ME! 💕",
-            "OUCH! I'M LEARNING MY LESSON! 😣",
-            "SORRY MY LOVE! 😭",
-            "OWW! I WAS SO WRONG! 💔",
-            "OUCH! PLEASE TALK TO ME! 😢",
-            "AHH! I MISS YOU! 💕"
-        ];
-
-        function slapMe() {
-            slapCount++;
-            document.getElementById('slapCount').textContent = slapCount;
-            
-            const character = document.querySelector('.slap-character');
-            character.classList.add('shaking');
-            
-            // Show slap mark
-            const slapMark = document.getElementById('slapMark');
-            slapMark.style.opacity = '1';
-            
-            setTimeout(() => {
-                character.classList.remove('shaking');
-                slapMark.style.opacity = '0';
-            }, 300);
-            
-            // Create reaction bubble
-            const reaction = reactions[Math.floor(Math.random() * reactions.length)];
-            const bubble = document.createElement('div');
-            bubble.className = 'reaction-bubble';
-            bubble.textContent = reaction;
-            bubble.style.left = (Math.random() * 60 + 20) + '%';
-            bubble.style.top = '30%';
-            document.querySelector('.game-section').appendChild(bubble);
-            
-            setTimeout(() => bubble.remove(), 2000);
-            
-            // Create sparkles on hit
-            for(let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'sparkle';
-                    sparkle.style.left = (50 + (Math.random() - 0.5) * 30) + '%';
-                    sparkle.style.top = (40 + (Math.random() - 0.5) * 30) + '%';
-                    document.querySelector('.game-section').appendChild(sparkle);
-                    setTimeout(() => sparkle.remove(), 1000);
-                }, i * 50);
-            }
-            
-            // Special milestone messages
-            if(slapCount === 10) {
-                alert("😭 10 SLAPS! I really messed up! I'm so sorry my love! 💔");
-            }
-            if(slapCount === 25) {
-                alert("😢 25 SLAPS! Your anger is justified! I'll do better, I promise! 🙏");
-            }
-            if(slapCount === 50) {
-                alert("😭 50 SLAPS! I think I'm learning my lesson now! Please forgive me! 💕");
-            }
-            if(slapCount === 100) {
-                createConfetti();
-                setTimeout(() => {
-                    alert("😭💕 100 SLAPS! Okay, I think we're even now? 😅 I love you so much and I'll never hurt you again! ❤️");
-                }, 500);
+        // --- NAME TYPEWRITER ---
+        const typeText = "Aisha";
+        const typeDest = document.getElementById('typewriter');
+        let typeIdx = 0;
+        function initTypewriter() {
+            if(typeIdx < typeText.length) {
+                typeDest.innerHTML += typeText.charAt(typeIdx);
+                typeIdx++;
+                setTimeout(initTypewriter, 200);
             }
         }
 
-        // Confetti explosion
-        function createConfetti() {
-            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff'];
-            for(let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.top = '0';
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 20);
+        // --- CANVAS PARTICLES (Rose + Stars) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        
+        function resize() { width=canvas.width=window.innerWidth; height=canvas.height=window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random()*width; this.y = Math.random()*height;
+                this.type = Math.random() > 0.7 ? 'petal' : 'star';
+                this.opacity = Math.random();
+                if(this.type==='petal'){
+                    this.size = Math.random()*5+2; 
+                    this.speedY = Math.random()+0.5; this.speedX = (Math.random()-0.5);
+                    this.rotation = Math.random()*360; 
+                    this.color = '#fda4af';
+                } else {
+                    this.size = Math.random()*2;
+                    this.speedY = (Math.random()-0.5)*0.2; this.speedX = (Math.random()-0.5)*0.2;
+                    this.color = Math.random()>0.9?'#fbbf24':'#fff';
+                }
+            }
+            update() {
+                this.y += this.speedY; this.x += this.speedX;
+                if(this.type==='petal') this.rotation += 1;
+                if(this.x<0||this.x>width||this.y<0||this.y>height) this.reset();
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
+                if(this.type==='petal'){
+                    ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation*Math.PI/180);
+                    ctx.beginPath(); ctx.ellipse(0,0,this.size,this.size/2,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+                } else {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+                }
             }
         }
+        for(let i=0;i<150;i++) particles.push(new Particle());
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
+        animate();
 
-        // Add wiggle effect to surprise boxes
-        document.querySelectorAll('.surprise-box').forEach(box => {
-            box.addEventListener('mouseenter', function() {
-                this.classList.add('wiggling');
-            });
-            box.addEventListener('mouseleave', function() {
-                this.classList.remove('wiggling');
-            });
+        // --- 9. INTERACTIONS ---
+        
+        // Music Player Toggle
+        const audio = new Audio('rockwithyou.mp3');
+        audio.loop = true; // Optional: loop the song
+        
+        let isPlaying = false;
+        const playBtn = document.getElementById('play-btn');
+        const vinyl = document.getElementById('vinyl');
+        
+        playBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+            
+            if(isPlaying) {
+                vinyl.classList.remove('animate-spin-slow');
+                vinyl.classList.add('animate-spin'); // fast spin
+                audio.play().catch(e => console.log("Audio play failed (user interaction needed):", e));
+            } else {
+                vinyl.classList.remove('animate-spin');
+                vinyl.classList.add('animate-spin-slow');
+                audio.pause();
+            }
         });
 
-        // Add bounce effect to buttons
-        document.querySelectorAll('.kiss-button, .forgive-button').forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                this.classList.add('bouncing');
-            });
-            button.addEventListener('mouseleave', function() {
-                this.classList.remove('bouncing');
-            });
+        // Reasons
+        const reasons = ["Your smile makes my day ❤️", "Your eyes are so beautiful ✨", "You have the cutest anger ever 😠💕", "You are so caring 🌸"];
+        let rIdx = 0;
+        document.getElementById('next-reason').addEventListener('click', ()=>{ rIdx=(rIdx+1)%reasons.length; updateReason(); });
+        document.getElementById('prev-reason').addEventListener('click', ()=>{ rIdx=(rIdx-1+reasons.length)%reasons.length; updateReason(); });
+        function updateReason(){ const el=document.getElementById('reason-content'); el.style.opacity=0; setTimeout(()=>{el.innerText='"'+reasons[rIdx]+'"'; el.style.opacity=1;},500); }
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+        
+        // Cake Wish
+        document.getElementById('cake-interaction').addEventListener('click', function() {
+            document.getElementById('candles').style.opacity = '0';
+            // Simple confetti
+            for(let i=0;i<50;i++){
+                 const c = document.createElement('div');
+                 c.className = 'fixed w-2 h-2 z-50';
+                 c.style.background = ['#fbbf24','#be185d'][Math.floor(Math.random()*2)];
+                 c.style.left='50%'; c.style.top='50%';
+                 document.body.appendChild(c);
+                 c.animate([{transform:'translate(0,0)'}, {transform:`translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px)`, opacity:0}], {duration:1000}).onfinish=()=>c.remove();
+            }
         });
 
-        // Add glow effect to apology cards on hover
-        document.querySelectorAll('.apology-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.classList.add('glowing');
-            });
-            card.addEventListener('mouseleave', function() {
-                this.classList.remove('glowing');
-            });
+        // Love Calc
+        document.getElementById('calc-love').addEventListener('click', ()=>{
+             const res = document.getElementById('love-res');
+             res.classList.remove('hidden'); res.classList.add('animate-bounce');
         });
+
+        // --- BALLOON GAME ---
+        const balloonContainer = document.getElementById('balloon-container');
+        let score = 0;
+        
+        function spawnBalloon() {
+            if(document.hidden) return; 
+            const b = document.createElement('div');
+            b.innerHTML = '<i class="fas fa-heart"></i>';
+            b.classList.add('absolute', 'text-brand-pink', 'text-4xl', 'cursor-pointer', 'transition', 'hover:scale-125');
+            b.style.pointerEvents = 'auto'; // Re-enable clicks
+            b.style.left = Math.random() * 80 + 10 + '%';
+            b.style.bottom = '-50px';
+            b.style.textShadow = '0 0 10px rgba(190, 24, 93, 0.5)';
+            
+            balloonContainer.appendChild(b);
+
+            const anim = b.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(-350px) rotate(${Math.random()*90 - 45}deg)`, opacity: 0.8 } 
+            ], {
+                duration: 4000,
+                easing: 'linear'
+            });
+
+            // Pop interaction
+            b.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent bubbling
+                score++;
+                document.getElementById('score').innerText = score;
+                
+                // Pop visual
+                b.innerHTML = '✨'; 
+                b.style.textShadow = '0 0 20px #fbbf24';
+                anim.cancel();
+                
+                // Disappear anim
+                b.animate([
+                    { transform: 'scale(1)', opacity: 1 },
+                    { transform: 'scale(2)', opacity: 0 }
+                ], { duration: 300 }).onfinish = () => b.remove();
+            });
+
+            anim.onfinish = () => b.remove();
+        }
+
+        // Start spawning
+        setInterval(spawnBalloon, 1000);
+
+        // Custom Cursor
+        const dot=document.getElementById('cursor-dot'), outline=document.getElementById('cursor-outline');
+        window.addEventListener('mousemove', (e)=>{
+             dot.style.left=e.clientX+'px'; dot.style.top=e.clientY+'px';
+             outline.animate({left:e.clientX+'px', top:e.clientY+'px'}, {duration:500, fill:'forwards'});
+        });
+        
     </script>
 </body>
 </html>
